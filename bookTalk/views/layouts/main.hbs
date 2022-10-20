@@ -27,12 +27,12 @@
 
         <div class="header">
             <nav class="navbar">
-                <a href="#">Home</a>
-                <a href="#">Catalog</a>
+                <a href="/">Home</a>
+                <a href="/catalog">Catalog</a>
                 <!--Only for logged user-->
                 {{#if user}}
-                <a href="#">Profile</a>
-                <a href="#">Create Review</a>
+                <a href="/profile">Profile</a>
+                <a href="/create">Create Review</a>
                 <a href="/auth/logout">Logout</a>
                 {{else}}
                 <!--Only for guest-->
