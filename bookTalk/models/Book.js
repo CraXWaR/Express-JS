@@ -52,4 +52,4 @@ bookSchema.index({ title: 1 }, {
 
 const Book = model('Book', bookSchema);
 
-module.exports = Book
+module.exports = Book;
