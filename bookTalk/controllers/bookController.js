@@ -1,12 +1,13 @@
 const { hasUser } = require('../middlewares/guards');
-const { getBookById, getAllBooks, createBookReview } = require('../services/bookService');
+const { getBookById, getAllBooks, createBookReview, wishBook } = require('../services/bookService');
 const { parseError } = require('../util/parser');
 
 const bookController = require('express').Router();
 
 bookController.get('/create', hasUser(), (req, res) => {
     res.render('books/create', {
-        title: 'Book Create'
+        title: 'Book Create',
+        user: req.user
     })
 });
 
@@ -19,8 +20,8 @@ bookController.post('/create', async (req, res) => {
         bookReview: req.body.bookReview,
         genre: req.body.genre,
         stars: req.body.stars,
+        owner: req.user._id
     };
-    const userId = req?.user._id;
 
     try {
         await createBookReview(book);
@@ -39,26 +40,29 @@ bookController.get('/catalog', async (req, res) => {
     const books = await getAllBooks();
     res.render('books/catalog', {
         title: 'Books Catalog',
+        user: req.user,
         books
     })
 })
 
 bookController.get('/details/:id', async (req, res) => {
-    const bookId = req.params.id;
-    const userId = req.user?.id;
-    const book = await getBookById(bookId);
-    const wishedBook = book.wishList.some((id) => id == userId);
+    const book = await getBookById(req.params.id);
 
-    if (book?.owner == userId) {
-        book.isOwner = true;
-    } else if (wishedBook) {
-        book.isWished = true
+    if (req.user._id) {
+        book.isOwner = book.owner.toString() == req.user._id.toString();
+        book.isWished = book.wishList.some((id) => id == req.user._id);
     }
 
     res.render('books/details', {
-        title: 'Book Details',
+        title: book.title,
+        user: req.user,
         book
     });
+});
+
+bookController.get('/details/:id/wish', hasUser(), async (req, res) => {
+    await wishBook(req.params.id, req.user._id);
+    res.redirect(`/details/${req.params.id}`);
 });
 
 module.exports = bookController;

@@ -1,4 +1,5 @@
-const { Schema, model, Types } = require('mongoose');
+const { Schema, model, Types, mongoose  } = require('mongoose');
+const User = require('./User');
 
 const URL_PATTERN = /https?:\/\/./i;
 
@@ -32,11 +33,12 @@ const bookSchema = new Schema({
         minlength: 1,
         maxlength: 5
     },
-    wishList: {
-        type: [Types.ObjectId],
-        ref: 'User',
-        default: []
-    },
+    wishList: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: User,
+        }
+    ],
     owner: {
         type: [Types.ObjectId],
         ref: 'User'
