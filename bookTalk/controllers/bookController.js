@@ -1,5 +1,5 @@
 const { hasUser } = require('../middlewares/guards');
-const { getBookById, getAllBooks, createBookReview, wishBook } = require('../services/bookService');
+const { getBookById, getAllBooks, createBookReview, wishBook, editBook, deleteBook } = require('../services/bookService');
 const { parseError } = require('../util/parser');
 
 const bookController = require('express').Router();
@@ -63,6 +63,51 @@ bookController.get('/details/:id', async (req, res) => {
 bookController.get('/details/:id/wish', hasUser(), async (req, res) => {
     await wishBook(req.params.id, req.user._id);
     res.redirect(`/details/${req.params.id}`);
+});
+
+bookController.get('/details/:id/edit', async (req, res) => {
+    const book = await getBookById(req.params.id);
+
+    if (book.owner.toString() != req.user._id.toString()) {
+        return res.redirect('/auth/login');
+    }
+
+    res.render('books/edit', {
+        title: 'Edit book',
+        user: req.user,
+        book
+    })
+});
+
+bookController.get('/details/:id/delete', async (req, res) => {
+    const book = await getBookById(req.params.id);
+
+    if (book.owner.toString() != req.user._id.toString()) {
+        return res.redirect('/auth/login');
+    }
+
+    await deleteBook(req.params.id);
+    res.redirect('/catalog');
+})
+
+bookController.post('/details/:id/edit', async (req, res) => {
+    const book = await getBookById(req.params.id);
+
+    if (book.owner.toString() != req.user._id.toString()) {
+        return res.redirect('/auth/login');
+    }
+
+    try {
+        await editBook(req.params.id, req.body);
+        res.redirect(`/details/${req.params.id}`);
+    } catch (error) {
+        res.render('books/edit', {
+            title: 'Edit book',
+            user: req.user,
+            errors: parseError(error),
+            book: req.body
+        })
+    }
 });
 
 module.exports = bookController;
