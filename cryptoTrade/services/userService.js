@@ -5,46 +5,51 @@ const User = require('../models/User');
 
 const JWT_SECRET = '56dsa4d6as85dsa';
 
-//todo username mby be email depends on task need check as username
-async function register(username, password) {
-    const exists = await User.findOne({ username }).collation({ locale: 'en', strength: 2 });
-    if (exists) {
+async function register(username, email, password) {
+    const existsUsername = await User.findOne({ username }).collation({ locale: 'en', strength: 2 });
+    if (existsUsername) {
         throw new Error('Username is taken');
+    }
+    
+    const existsEmail = await User.findOne({ email }).collation({ locale: 'en', strength: 2 });
+    if (existsEmail) {
+        throw new Error('Email is taken');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
        username,
+       email,
        hashedPassword 
     });
 
-    // TODO if registation creeates user session
     const token = createSession(user);
     
     return token;
 }
-//todo username mby be email depends on task
-async function login(username, password) {
-    const user = await User.findOne({ username }).collation({ locale: 'en', strength: 2 });
+
+async function login(email, password) {
+    const user = await User.findOne({ email }).collation({ locale: 'en', strength: 2 });
     if (!user) {
-        throw new Error('Wrong username or password!')
+        throw new Error('Wrong email or password!')
     }
 
     const hasMatch = await bcrypt.compare(password, user.hashedPassword);
 
     if (hasMatch == false) {
-        throw new Error('Wrong username or password!')
+        throw new Error('Wrong email or password!')
     }
 
     const token = createSession(user);
     return token
 }
 
-function createSession({ _id, username }) {
+function createSession({ _id, username, email }) {
     const payload = {
         _id,
-        username
+        username,
+        email
     };
 
     const token = jwt.sign(payload, JWT_SECRET);
