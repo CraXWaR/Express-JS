@@ -1,5 +1,5 @@
 const { hasUser } = require('../middlewares/guards');
-const { createCrypto, getAllCrypto } = require('../services/cryptoService');
+const { createCrypto, getAllCrypto, getCryptoById } = require('../services/cryptoService');
 const { parseError } = require('../util/parser');
 
 
@@ -20,7 +20,8 @@ cryptoController.post('/create', async (req, res) => {
         imageUrl: req.body.imageUrl,
         price: Number(req.body.price),
         cryptoDescription: req.body.cryptoDescription,
-        paymentMethod: req.body.paymentMethod
+        paymentMethod: req.body.paymentMethod,
+        owner: req.user._id
     };
 
     try {
@@ -43,6 +44,22 @@ cryptoController.get('/catalog', async (req, res) => {
         user: req.user,
         cryptos
     })
+});
+
+cryptoController.get('/details/:id', async (req, res) => {
+    const crypto = await getCryptoById(req.params.id);
+
+    if (req.user._id) {
+        crypto.isOwner = crypto.owner.toString() == req.user._id.toString();
+        crypto.isBougth = crypto.buyCrypto.some((id) => id == req.user._id);
+    }
+
+    res.render('details', {
+        title: crypto.title,
+        user: req.user,
+        crypto
+    })
+    console.log(crypto.isOwner);
 });
 
 module.exports = cryptoController;
