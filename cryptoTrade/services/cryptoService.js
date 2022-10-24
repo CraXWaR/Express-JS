@@ -18,9 +18,18 @@ async function buyCrypto(cryptoId, userId) {
     await crypto.save();
 }
 
+async function deleteCrypto(id) {
+    return await Crypto.findByIdAndDelete(id);
+}
+
+async function editCrypto(id, data) {
+    
+}
+
 module.exports = {
     getAllCrypto,
     createCrypto,
     getCryptoById,
-    buyCrypto
+    buyCrypto,
+    deleteCrypto
 }

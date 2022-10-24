@@ -1,5 +1,5 @@
 const { hasUser } = require('../middlewares/guards');
-const { createCrypto, getAllCrypto, getCryptoById, buyCrypto } = require('../services/cryptoService');
+const { createCrypto, getAllCrypto, getCryptoById, buyCrypto, deleteCrypto } = require('../services/cryptoService');
 const { parseError } = require('../util/parser');
 
 
@@ -66,6 +66,15 @@ cryptoController.get('/details/:id/buy', hasUser(), async (req, res) => {
     res.redirect(`/details/${req.params.id}`);
 });
 
+cryptoController.get('/details/:id/delete', async (req, res) => {
+    const crypto = await getCryptoById(req.params.id);
 
+    if (crypto.owner.toString() != req.user._id.toString()) {
+        return res.redirect('/auth/login');
+    }
+
+    await deleteCrypto(req.params.id);
+    res.redirect('/catalog')
+})
 
 module.exports = cryptoController;
