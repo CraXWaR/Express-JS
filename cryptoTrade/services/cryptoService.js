@@ -12,8 +12,15 @@ async function getCryptoById(id) {
     return await Crypto.findById(id).lean();
 }
 
+async function buyCrypto(cryptoId, userId) {
+    const crypto = await Crypto.findById(cryptoId);
+    crypto.buyCrypto.push(userId);
+    await crypto.save();
+}
+
 module.exports = {
     getAllCrypto,
     createCrypto,
-    getCryptoById
+    getCryptoById,
+    buyCrypto
 }

@@ -1,5 +1,5 @@
 const { hasUser } = require('../middlewares/guards');
-const { createCrypto, getAllCrypto, getCryptoById } = require('../services/cryptoService');
+const { createCrypto, getAllCrypto, getCryptoById, buyCrypto } = require('../services/cryptoService');
 const { parseError } = require('../util/parser');
 
 
@@ -59,7 +59,13 @@ cryptoController.get('/details/:id', async (req, res) => {
         user: req.user,
         crypto
     })
-    console.log(crypto.isOwner);
 });
+
+cryptoController.get('/details/:id/buy', hasUser(), async (req, res) => {
+    await buyCrypto(req.params.id, req.user._id);
+    res.redirect(`/details/${req.params.id}`);
+});
+
+
 
 module.exports = cryptoController;
