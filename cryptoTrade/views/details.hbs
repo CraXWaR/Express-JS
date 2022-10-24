@@ -8,7 +8,7 @@
         <div class="coin-text">
             <h1 id="name">{{crypto.name}}</h1>
             <h3 id="payment">Payment method: {{crypto.paymentMethod}}</h3>
-            <p id="price"><span>Price: $31 166.71</span></p>
+            <p id="price"><span>Price: ${{crypto.price}}</span></p>
             <p id="description">{{crypto.cryptoDescription}}</p>
         </div>
         {{#if user}}

@@ -24,7 +24,7 @@ async function deleteCrypto(id) {
 
 async function editCrypto(id, data) {
     const existingCrypto = await Crypto.findById(id);
-
+    
     existingCrypto.name = data.name;
     existingCrypto.imageUrl = data.imageUrl;
     existingCrypto.price = data.price;

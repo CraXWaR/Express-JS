@@ -24,12 +24,10 @@ const cryptoSchema = new Schema ({
     },
     cryptoDescription: {
         type: String,
-        required: true,
         minlength: [10, 'Description should be at least 10 chars long']
     },
     paymentMethod: {
         type: String,
-        required: true
     },
     buyCrypto: [
         {

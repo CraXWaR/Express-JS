@@ -1,5 +1,5 @@
 const { hasUser } = require('../middlewares/guards');
-const { createCrypto, getAllCrypto, getCryptoById, buyCrypto, deleteCrypto } = require('../services/cryptoService');
+const { createCrypto, getAllCrypto, getCryptoById, buyCrypto, deleteCrypto, editCrypto } = require('../services/cryptoService');
 const { parseError } = require('../util/parser');
 
 
@@ -77,7 +77,7 @@ cryptoController.get('/details/:id/delete', async (req, res) => {
     res.redirect('/catalog')
 });
 
-cryptoController.get('/details/:id/edit', hasUser(), async (req, res) => {
+cryptoController.get('/details/:id/edit', async (req, res) => {
     const crypto = await getCryptoById(req.params.id);
 
     if (crypto.owner.toString() != req.user._id.toString()) {
@@ -89,6 +89,22 @@ cryptoController.get('/details/:id/edit', hasUser(), async (req, res) => {
         user: req.user,
         crypto
     })
-})
+});
+
+cryptoController.post('/details/:id/edit', async (req, res) => {
+    const crypto = await getCryptoById(req.params.id);
+
+    try {
+        await editCrypto(req.params.id, req.body);
+        res.redirect(`/details/${req.params.id}`);
+    } catch (error) {
+        res.render('edit', {
+            title: 'Edit book',
+            user: req.user,
+            errors: parseError(error),
+            crypto: req.body
+        })
+    }
+});
 
 module.exports = cryptoController;
