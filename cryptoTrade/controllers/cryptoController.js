@@ -75,6 +75,20 @@ cryptoController.get('/details/:id/delete', async (req, res) => {
 
     await deleteCrypto(req.params.id);
     res.redirect('/catalog')
+});
+
+cryptoController.get('/details/:id/edit', hasUser(), async (req, res) => {
+    const crypto = await getCryptoById(req.params.id);
+
+    if (crypto.owner.toString() != req.user._id.toString()) {
+        return res.redirect('/auth/login');
+    }
+
+    res.render('edit', {
+        title: 'Edit Crypto',
+        user: req.user,
+        crypto
+    })
 })
 
 module.exports = cryptoController;
