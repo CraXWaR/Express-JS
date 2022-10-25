@@ -22,11 +22,23 @@ async function deleteAuction(id) {
     return await Auction.findByIdAndDelete(id);
 }
 
+async function editAuction(id, data) {
+    const existingAuction = await Auction.findById(id);
+
+    existingAuction.title = data.title;
+    existingAuction.category = data.category;
+    existingAuction.imageUrl = data.imageUrl;
+    existingAuction.price = data.price;
+    existingAuction.description = data.description;
+
+    existingAuction.save();
+}
+
 module.exports = {
     getAuctions,
     getAuctionById,
     createAuction,
     bidAuction,
     deleteAuction,
-    
+    editAuction
 }
