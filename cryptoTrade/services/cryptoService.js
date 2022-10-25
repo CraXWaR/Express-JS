@@ -28,8 +28,8 @@ async function editCrypto(id, data) {
     existingCrypto.name = data.name;
     existingCrypto.imageUrl = data.imageUrl;
     existingCrypto.price = data.price;
-    existingCrypto.cryptoDescription = data.cryptoDescription;
-    existingCrypto.paymentMethod = data.paymentMethod;
+    existingCrypto.cryptoDescription = data.description;
+    existingCrypto.paymentMethod = data.payMethod;
 
     return existingCrypto.save();
 }
