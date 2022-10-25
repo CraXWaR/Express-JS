@@ -26,6 +26,8 @@ auctionController.post('/create', async (req, res) => {
         imageUrl: req.body.imageUrl,
         price: req.body.price,
         description: req.body.description,
+        firstName: req.user.firstName,
+        lastName: req.user.lastName,
         owner: req.user._id
     };
 

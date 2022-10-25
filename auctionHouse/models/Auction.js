@@ -33,6 +33,14 @@ const auctionSchema = new Schema({
         type: [Types.ObjectId],
         ref: 'User'
     },
+    firstName: {
+        type: String,
+        ref: 'User'
+    },
+    lastName: {
+        type: String,
+        ref: 'User'
+    },
     biddList: [
         {
             type: mongoose.Types.ObjectId,
