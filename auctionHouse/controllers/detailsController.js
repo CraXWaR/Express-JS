@@ -1,4 +1,5 @@
-const { getAuctionById } = require('../services/auctionService');
+const { hasUser } = require('../middlewares/guards');
+const { getAuctionById, bidAuction } = require('../services/auctionService');
 
 const detailsController = require('express').Router();
 
@@ -22,6 +23,11 @@ detailsController.get('/details/:id', async (req, res) => {
             auction
         });
     }
+});
+
+detailsController.get('/details/:id/bid', hasUser(), async (req, res) => {
+    await bidAuction(req.params.id, req.user._id);
+    res.redirect(`/details/${req.params.id}`);
 });
 
 module.exports = detailsController;

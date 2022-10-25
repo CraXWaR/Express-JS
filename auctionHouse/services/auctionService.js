@@ -12,8 +12,15 @@ async function createAuction(auction) {
     return Auction.create(auction);
 }
 
+async function bidAuction(auctionId, userId) {
+    const auction = await Auction.findById(auctionId);
+    auction.biddList.push(userId);
+    await auction.save();
+}
+
 module.exports = {
     getAuctions,
     getAuctionById,
-    createAuction
+    createAuction,
+    bidAuction
 }
