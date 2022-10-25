@@ -5,61 +5,59 @@ const authController = require('express').Router();
 
 
 authController.get('/register', (req, res) => {
-    //todo replace with real view 
-    res.render('register', {
+    res.render('auth/register', {
         title: 'Register Page'
     });
 });
 
 authController.post('/register', async (req, res) => {
     try {
-        if (req.body.username == '' || req.body.password == '') {
+        if (req.body.email == '' || req.body.firstName == '' || req.body.lastName == '' || req.body.password == '') {
             throw new Error('All field are required!')
         }
-        //TODO check rePassword name in template
         if (req.body.password != req.body.repass) {
             throw new Error('Passwords don\'t match!')
         }
-        const token = await register(req.body.username, req.body.password);
+        const token = await register(req.body.email, req.body.firstName, req.body.lastName, req.body.password);
 
-        //todo check to see if register creates session
         res.cookie('token', token);
-        res.redirect('/');//todo see if redirect 
+        res.redirect('/');
     } catch (error) {
         //error parser
         console.log(error);
         const errors = parseError(error);
 
-        //TODO add error display to tempalte
-        res.render('register', {
+        res.render('auth/register', {
             title: 'Register Page',
             errors,
             body: {
-                username: req.body.username
+                email: req.body.email,
+                firstName: req.body.firstName,
+                lastName: req.body.lastName
             }
         });
     }
 });
 
 authController.get('/login', (req, res) => {
-    res.render('login', {
+    res.render('auth/login', {
         title: 'Login Page'
     });
 });
 
 authController.post('/login', async (req, res) => {
    try {
-        const token = await login(req.body.username, req.body.password);
+        const token = await login(req.body.email, req.body.password);
         
         res.cookie('token', token);
-        res.redirect('/'); //todo see if redirect 
+        res.redirect('/');
    } catch (error) {
         const errors = parseError(error);
-        res.render('login', {
+        res.render('auth/login', {
             title: 'Login Page',
             errors,
             body: {
-                username: req.body.username
+                email: req.body.email
             }
         });
    } 
