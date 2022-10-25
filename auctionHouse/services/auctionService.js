@@ -18,9 +18,15 @@ async function bidAuction(auctionId, userId) {
     await auction.save();
 }
 
+async function deleteAuction(id) {
+    return await Auction.findByIdAndDelete(id);
+}
+
 module.exports = {
     getAuctions,
     getAuctionById,
     createAuction,
-    bidAuction
+    bidAuction,
+    deleteAuction,
+    
 }

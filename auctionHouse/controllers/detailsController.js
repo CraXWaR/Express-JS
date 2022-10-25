@@ -1,5 +1,5 @@
 const { hasUser } = require('../middlewares/guards');
-const { getAuctionById, bidAuction } = require('../services/auctionService');
+const { getAuctionById, bidAuction, deleteAuction } = require('../services/auctionService');
 
 const detailsController = require('express').Router();
 
@@ -28,6 +28,16 @@ detailsController.get('/details/:id', async (req, res) => {
 detailsController.get('/details/:id/bid', hasUser(), async (req, res) => {
     await bidAuction(req.params.id, req.user._id);
     res.redirect(`/details/${req.params.id}`);
+});
+
+detailsController.get('/details/:id/delete', async (req, res) => {
+    const auction = await getAuctionById(req.params.id);
+
+    if (auction.owner.toString() != req.user._id.toString()) {
+        return res.redirect('/auth/login');
+    }
+    await deleteAuction(req.params.id);
+    res.redirect('/catalog')
 });
 
 module.exports = detailsController;
