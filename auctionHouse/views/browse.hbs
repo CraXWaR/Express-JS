@@ -3,9 +3,9 @@
     <h1 class="item">Auctions</h1>
 
     <!-- List of available auctions -->
-    {{#if cards}}
+    {{#if auctions}}
     <ul class="catalog cards">
-        {{#each cards}}
+        {{#each auctions}}
         {{> card}}
         {{/each}}
     </ul>
@@ -14,7 +14,7 @@
     <div class="item pad-large align-center">
         <p>Nothing has been listed yet. Be the first!</p>
         <div>
-            <a class="action" href="#">Publish Auction</a>
+            <a class="action" href="/create">Publish Auction</a>
         </div>
     </div>
     {{/if}}
