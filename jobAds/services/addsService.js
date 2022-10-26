@@ -27,11 +27,18 @@ async function editJob(id, data) {
     return exinstingJob.save();
 }
 
+async function applyJob(jobId, userId) {
+    const job = await Ad.findById(jobId);
+
+    job.appliedJob.push(userId);
+    await job.save();
+}
+
 module.exports = {
     getAllJobs,
     createJob,
     getJobById,
     deleteJob,
     editJob,
-    
+    applyJob
 }

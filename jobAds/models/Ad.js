@@ -20,7 +20,6 @@ const adSchema = new Schema({
     companyDescription: {
         type: String,
         required: true,
-        minlength: [40, 'Company description should be at least 40 chars long']
     },
     owner: {
         type: [Types.ObjectId],
@@ -38,7 +37,7 @@ const adSchema = new Schema({
     ]
 });
 
-adSchema.index({ name: 1 }, {
+adSchema.index({ headline: 1 }, {
     collation: {
         locale: 'en',
         strength: 2

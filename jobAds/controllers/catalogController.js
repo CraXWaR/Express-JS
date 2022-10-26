@@ -1,5 +1,5 @@
 const { hasUser } = require('../middlewares/guards');
-const { getAllJobs, createJob, getJobById, deleteJob, editJob } = require('../services/addsService');
+const { getAllJobs, createJob, getJobById, deleteJob, editJob, applyJob } = require('../services/addsService');
 const { parseError } = require('../util/parser');
 
 
@@ -101,6 +101,12 @@ adController.post('/details/:id/edit', async (req, res) => {
             job: req.body
         })
     }
+});
+
+adController.get('/details/:id/apply', hasUser(), async (req, res) => {
+    await applyJob(req.params.id, req.user._id);
+
+    res.redirect(`/details/${req.params.id}`);
 });
 
 module.exports = adController;
