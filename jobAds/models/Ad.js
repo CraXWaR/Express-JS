@@ -26,6 +26,10 @@ const adSchema = new Schema({
         type: [Types.ObjectId],
         ref: 'User'
     },
+    ownerEmail: {
+        type: String,
+        ref: 'User'
+    },
     appliedJob: [
         {
             type: mongoose.Types.ObjectId,
