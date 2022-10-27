@@ -3,7 +3,7 @@ function hasUser() {
         if (req.user) {
             next();
         } else {
-            res.redirect('/auth/login'); //todo change according to task if need for redirect
+            res.redirect('/auth/login');
         }
     };
 }
@@ -11,7 +11,7 @@ function hasUser() {
 function isGuest() {
     return (req, res, next) => {
         if (req.user) {
-            res.redirect('/'); //todo change according to task if need for redirect
+            res.redirect('/');
         } else {
             next(); 
         }

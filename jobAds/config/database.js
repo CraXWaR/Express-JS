@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const CONNECTION_STRING = 'mongodb://0.0.0.0:27017/jobList';
+const CONNECTION_STRING = 'mongodb://0.0.0.0:27017/shareTrip';
 
 module.exports = async (app) => {
     try {

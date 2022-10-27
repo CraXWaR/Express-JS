@@ -5,6 +5,7 @@ const authController = require('express').Router();
 
 
 authController.get('/register', (req, res) => {
+    //todo replace with real view 
     res.render('auth/register', {
         title: 'Register Page'
     });
@@ -12,16 +13,16 @@ authController.get('/register', (req, res) => {
 
 authController.post('/register', async (req, res) => {
     try {
-        if (req.body.email == '' || req.body.password == '' || req.body.skills == '') {
+        if (req.body.email == '' || req.body.password == '') {
             throw new Error('All field are required!')
         }
-        if (req.body.password.length < 5) {
-            throw new Error('Password must be at least 5 characters long')
+        if (req.body.password.length < 4) {
+            throw new Error('Password must be at least 4 characters long!')
         }
-        if (req.body.password != req.body.repass) {
+        if (req.body.password != req.body.rePassword) {
             throw new Error('Passwords don\'t match!')
         }
-        const token = await register(req.body.email, req.body.password, req.body.skills);
+        const token = await register(req.body.email, req.body.password, req.body.gender);
 
         res.cookie('token', token);
         res.redirect('/');

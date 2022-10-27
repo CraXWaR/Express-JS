@@ -1,14 +1,9 @@
-const { getAllJobs } = require('../services/addsService');
-
 const homeController = require('express').Router();
 
-//TODO real controller
-homeController.get('/', async (req, res) => {
-    const adds = await getAllJobs();
+homeController.get('/', (req, res) => {
     res.render('home', {
         title: 'Home Page',
-        user: req.user,
-        adds
+        user: req.user
     });
 });
 

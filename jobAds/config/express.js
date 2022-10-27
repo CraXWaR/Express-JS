@@ -17,5 +17,5 @@ module.exports = (app) => {
     app.use(express.urlencoded({ extended: true }));
     app.use(cookieParser());
     app.use(session());
-    app.use(trimBody()); //need 'username/password' if want trim ignore
+    app.use(trimBody());
 };

@@ -1,21 +1,24 @@
 const { Schema, model } = require('mongoose');
 
+const URL_PATTERN = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+.[a-zA-Z]+$/i
 
 const userSchema = new Schema({
     email: { 
         type: String, 
         required: true, 
         unique: true, 
-        minlength: [3, 'At least 3 char'] 
+        validate: {
+            validator: (v) => URL_PATTERN.test(v),
+            message: 'Invalid email'
+        }
     },
     hashedPassword: { 
         type: String, 
         required: true 
     },
-    skills: {
-        type: String,
+    gender: {
+        type: String, 
         required: true,
-        minlength: [40, 'Skrills description must be at least 40 characters long']
     }
 });
 
