@@ -1,5 +1,5 @@
 const { hasUser } = require('../middlewares/guards');
-const { getAllTrips, createTrip, getTripById, deleteTrip } = require('../services/tripService');
+const { getAllTrips, createTrip, getTripById, deleteTrip, editTrip } = require('../services/tripService');
 const { parseError } = require('../util/parser');
 
 
@@ -66,6 +66,36 @@ tripController.get('/details/:id', async (req, res) => {
 tripController.get('/details/:id/delete', hasUser(), async (req, res) => {
     await deleteTrip(req.params.id);
     res.redirect('/catalog');
+});
+
+tripController.get('/details/:id/edit', async (req, res) => {
+    const trip = await getTripById(req.params.id);
+
+    if (trip.owner.toString() != req.user._id.toString()) {
+        return res.redirect('/auth/login');
+    };
+
+    res.render('trip-edit', {
+        title: 'Edit Trip',
+        user: req.user,
+        trip
+    });
+});
+
+tripController.post('/details/:id/edit', async (req, res) => {
+    const trip = await getTripById(req.params.id);
+
+    try {
+        await editTrip(req.params.id, req.body);
+        res.redirect(`/details/${req.params.id}`)
+    } catch (error) {
+        res.render('trip-edit', {
+            title: 'Edit Trip',
+            user: req.user,
+            trip,
+            errors: parseError(error)
+        });
+    }
 });
 
 module.exports = tripController;
