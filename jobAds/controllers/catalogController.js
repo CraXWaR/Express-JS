@@ -49,10 +49,8 @@ adController.post('/create', async (req, res) => {
 adController.get('/details/:id', async (req, res) => {
     const job = await getJobById(req.params.id);
 
-    if (req.user._id) {
-        job.isOwner = job.owner.toString() == req.user._id.toString();
-        job.isApplied = job.appliedJob.some((id) => id == req.user._id);
-    }
+    job.isOwner = job.owner.toString() == (req.user?._id)?.toString();
+    job.isApplied = job.appliedJob.some((id) => id == (req.user?._id));
 
     res.render('details', {
         title: 'Job title',
