@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
-//TODO change data base
-const CONNECTION_STRING = 'mongodb://0.0.0.0:27017/TODO... database';
+const CONNECTION_STRING = 'mongodb://0.0.0.0:27017/shareTrip';
 
 module.exports = async (app) => {
     try {

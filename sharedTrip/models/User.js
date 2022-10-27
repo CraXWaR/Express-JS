@@ -1,19 +1,28 @@
 const { Schema, model } = require('mongoose');
 
+const URL_PATTERN = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+.[a-zA-Z]+$/i
 
-//todo add user propertiest and validation on task
 const userSchema = new Schema({
-    username: { type: String, 
+    email: { 
+        type: String, 
         required: true, 
         unique: true, 
-        minlength: [3, 'At least 3 char'] 
+        validate: {
+            validator: (v) => URL_PATTERN.test(v),
+            message: 'Invalid email'
+        }
     },
-    hashedPassword: { type: String, 
+    hashedPassword: { 
+        type: String, 
         required: true 
     },
+    gender: {
+        type: String, 
+        required: true,
+    }
 });
 
-userSchema.index({ username: 1 }, {
+userSchema.index({ email: 1 }, {
     collation: {
         locale: 'en',
         strength: 2

@@ -19,12 +19,11 @@ async function register(email, password, skills) {
         hashedPassword 
     });
 
-    // TODO if registation creeates user session
     const token = createSession(user);
     
     return token;
 }
-//todo username mby be email depends on task
+
 async function login(email, password) {
     const user = await User.findOne({ email }).collation({ locale: 'en', strength: 2 });
     if (!user) {
