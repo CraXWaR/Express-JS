@@ -32,10 +32,17 @@ async function editTrip(id, data) {
     return existingTrip.save()
 }
 
+async function joinTrip(tripId, userId) {
+    const trip = await Trip.findById(tripId);
+    trip.buddies.push(userId);
+    await trip.save();
+}
+
 module.exports = {
     getAllTrips,
     createTrip,
     getTripById,
     deleteTrip,
-    editTrip
+    editTrip,
+    joinTrip
 }

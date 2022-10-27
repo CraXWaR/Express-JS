@@ -1,5 +1,5 @@
 const { hasUser } = require('../middlewares/guards');
-const { getAllTrips, createTrip, getTripById, deleteTrip, editTrip } = require('../services/tripService');
+const { getAllTrips, createTrip, getTripById, deleteTrip, editTrip, joinTrip } = require('../services/tripService');
 const { parseError } = require('../util/parser');
 
 
@@ -97,5 +97,11 @@ tripController.post('/details/:id/edit', async (req, res) => {
         });
     }
 });
+
+tripController.get('/details/:id/join', hasUser(), async (req, res) => {
+    await joinTrip(req.params.id, req.user._id);
+    res.redirect(`/details/${req.params.id}`);
+
+})
 
 module.exports = tripController;
