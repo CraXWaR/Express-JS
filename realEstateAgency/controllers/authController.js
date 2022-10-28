@@ -5,8 +5,7 @@ const authController = require('express').Router();
 
 
 authController.get('/register', (req, res) => {
-    //todo replace with real view 
-    res.render('register', {
+    res.render('auth/register', {
         title: 'Register Page'
     });
 });
@@ -15,6 +14,9 @@ authController.post('/register', async (req, res) => {
     try {
         if (req.body.fullName == '' || req.body.username == '' || req.body.password == '') {
             throw new Error('All field are required!')
+        }
+        if (req.body.password.length < 4) {
+            throw new Error('Password must be at least 4 characters!')
         }
         if (req.body.password != req.body.repass) {
             throw new Error('Passwords don\'t match!')
@@ -28,8 +30,7 @@ authController.post('/register', async (req, res) => {
         console.log(error);
         const errors = parseError(error);
 
-        //TODO add error display to tempalte
-        res.render('register', {
+        res.render('auth/register', {
             title: 'Register Page',
             errors,
             body: {
@@ -41,7 +42,7 @@ authController.post('/register', async (req, res) => {
 });
 
 authController.get('/login', (req, res) => {
-    res.render('login', {
+    res.render('auth/login', {
         title: 'Login Page'
     });
 });
@@ -54,7 +55,7 @@ authController.post('/login', async (req, res) => {
         res.redirect('/'); 
    } catch (error) {
         const errors = parseError(error);
-        res.render('login', {
+        res.render('auth/login', {
             title: 'Login Page',
             errors,
             body: {
