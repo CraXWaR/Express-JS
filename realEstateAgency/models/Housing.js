@@ -53,7 +53,13 @@ const houseingSchema = new Schema ({
     owner: {
         type: [Types.ObjectId],
         ref: 'User'
-    }
+    },
+    rentUsers: [
+        {
+            type: Types.ObjectId,
+            ref: 'User'
+        }
+    ]
 });
 
 houseingSchema.index({ name: 1}, {

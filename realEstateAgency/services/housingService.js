@@ -9,7 +9,7 @@ function createHouse(house) {
 }
 
 async function getHouseById(id) {
-    return await Houseing.findById(id).lean();
+    return await Houseing.findById(id).lean().populate({ path: 'rentUsers', select: 'fullName' });
 }
 
 async function deleteHouse(id) {
@@ -33,6 +33,7 @@ async function editHouse(id, data) {
 async function rentHouse(houseId, userId) {
     const house = await Houseing.findById(houseId);
     house.rentHome.push(userId);
+    house.rentUsers.push(userId);
     house.availablePieces -= 1;
     await house.save();
 }

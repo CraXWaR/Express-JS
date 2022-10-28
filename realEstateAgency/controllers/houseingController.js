@@ -48,6 +48,13 @@ houseingController.post('/create', async (req, res) => {
 
 houseingController.get('/details/:id', async (req, res) => {
     const house = await getHouseById(req.params.id);
+    const tenents = [];
+    
+    house.rentUsers.forEach((userRent) => {
+        tenents.push(userRent.fullName);
+    });
+
+    const endUsers = tenents.join(', ');
 
     house.isOwner = house.owner.toString() == req.user?._id.toString();
     house.isRent = house.rentHome.some((id) => id == req.user?._id);
@@ -55,7 +62,8 @@ houseingController.get('/details/:id', async (req, res) => {
     res.render('details', {
         title: house.name,
         user: req.user,
-        house
+        house,
+        endUsers
     });
 });
 
