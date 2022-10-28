@@ -23,7 +23,7 @@ const houseingSchema = new Schema ({
     city: {
         type: String,
         required: true,
-        minlength: [4, 'House name should be at least 4 characters long']
+        minlength: [4, 'City name should be at least 4 characters long']
     },
     homeImg: {
         type: String,
