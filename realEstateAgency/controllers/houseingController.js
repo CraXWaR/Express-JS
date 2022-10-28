@@ -1,5 +1,5 @@
 const { hasUser } = require('../middlewares/guards');
-const { getAllHouses, createHouse, getHouseById, deleteHouse } = require('../services/housingService');
+const { getAllHouses, createHouse, getHouseById, deleteHouse, editHouse } = require('../services/housingService');
 const { parseError } = require('../util/parser');
 
 
@@ -70,6 +70,34 @@ houseingController.get('/details/:id/delete', async (req, res) => {
     res.redirect('/catalog')
 });
 
-houseingController
+houseingController.get('/details/:id/edit', async (req, res) => {
+    const house = await getHouseById(req.params.id);
+
+    if(house.owner.toString() != req.user._id.toString()) {
+        return res.redirect('/auth/login');
+    };
+
+    res.render('edit', {
+        title: 'Edit Houseing',
+        user: req.user,
+        house
+    });
+});
+
+houseingController.post('/details/:id/edit', async (req, res) => {
+    const house = await getHouseById(req.params.id);
+
+    try {
+        await editHouse(req.params.id, req.body);
+        res.redirect(`/details/${req.params.id}`);
+    } catch (error) {
+        res.render('edit', {
+            title: 'Edit Houseing',
+            user: req.user,
+            house,
+            errors: parseError(error)
+        });
+    }
+});
 
 module.exports = houseingController;

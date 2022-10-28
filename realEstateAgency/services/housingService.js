@@ -16,9 +16,24 @@ async function deleteHouse(id) {
     return await Houseing.findByIdAndRemove(id);
 }
 
+async function editHouse(id, data) {
+    const existingHouse = await Houseing.findById(id);
+
+    existingHouse.name = data.name;
+    existingHouse.type = data.type;
+    existingHouse.year = data.year;
+    existingHouse.city = data.city;
+    existingHouse.homeImg = data.homeImg;
+    existingHouse.description = data.description;
+    existingHouse.availablePieces = data.availablePieces;
+
+   return existingHouse.save();
+}
+
 module.exports = {
     getAllHouses,
     createHouse,
     getHouseById,
-    deleteHouse
+    deleteHouse,
+    editHouse
 }
