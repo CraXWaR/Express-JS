@@ -6,7 +6,7 @@ const User = require('../models/User');
 const JWT_SECRET = '56dsa4d6as85dsa';
 
 //todo username mby be email depends on task need check as username
-async function register(username, password) {
+async function register(fullName, username, password) {
     const exists = await User.findOne({ username }).collation({ locale: 'en', strength: 2 });
     if (exists) {
         throw new Error('Username is taken');
@@ -15,16 +15,15 @@ async function register(username, password) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
-       username,
-       hashedPassword 
+        fullName,
+        username,
+        hashedPassword 
     });
 
-    // TODO if registation creeates user session
     const token = createSession(user);
-    
     return token;
 }
-//todo username mby be email depends on task
+
 async function login(username, password) {
     const user = await User.findOne({ username }).collation({ locale: 'en', strength: 2 });
     if (!user) {
@@ -41,10 +40,11 @@ async function login(username, password) {
     return token
 }
 
-function createSession({ _id, username }) {
+function createSession({ _id, username, fullName}) {
     const payload = {
         _id,
-        username
+        username,
+        fullName
     };
 
     const token = jwt.sign(payload, JWT_SECRET);
