@@ -33,6 +33,7 @@ async function editHouse(id, data) {
 async function rentHouse(houseId, userId) {
     const house = await Houseing.findById(houseId);
     house.rentHome.push(userId);
+    house.availablePieces -= 1;
     await house.save();
 }
 
