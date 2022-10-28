@@ -1,5 +1,5 @@
 const { hasUser } = require('../middlewares/guards');
-const { getAllHouses, createHouse, getHouseById, deleteHouse, editHouse } = require('../services/housingService');
+const { getAllHouses, createHouse, getHouseById, deleteHouse, editHouse, rentHouse } = require('../services/housingService');
 const { parseError } = require('../util/parser');
 
 
@@ -98,6 +98,11 @@ houseingController.post('/details/:id/edit', async (req, res) => {
             errors: parseError(error)
         });
     }
+});
+
+houseingController.get('/details/:id/rent', async (req, res) => {
+    await rentHouse(req.params.id, req.user._id);
+    res.redirect(`/details/${req.params.id}`);
 });
 
 module.exports = houseingController;

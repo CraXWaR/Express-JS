@@ -32,14 +32,15 @@
                 <a href="/details/{{house._id}}/delete" class="remove">Delete</a>
                 {{else}}
                 <!-- logged in user with available pieces-->
-                
-                    {{#if house.isRent}}
-                    <p class="alRentHome">You have already rent this home</p>
-                    {{else}}
-                    <a href="/details/{{house._id}}/rent" class="rentHome">Rent a home, available {{house.availablePieces}} housing</a>
-                    <!-- logged in user with no available pieces-->
 
-                    <p class="no-housing">No Housing Available!</p>
+                    {{#if house.isRent}}
+                        <p class="alRentHome">You have already rent this home</p>
+                    {{else}}
+                        <a href="/details/{{house._id}}/rent" class="rentHome">Rent a home, available {{house.availablePieces}} housing</a>
+                        <!-- logged in user with no available pieces-->
+                        {{#unless house.availablePieces}}
+                        <p class="no-housing">No Housing Available!</p>
+                        {{/unless}}
                     {{/if}}
                 {{/if}}
             </div>

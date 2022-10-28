@@ -30,10 +30,17 @@ async function editHouse(id, data) {
    return existingHouse.save();
 }
 
+async function rentHouse(houseId, userId) {
+    const house = await Houseing.findById(houseId);
+    house.rentHome.push(userId);
+    await house.save();
+}
+
 module.exports = {
     getAllHouses,
     createHouse,
     getHouseById,
     deleteHouse,
-    editHouse
+    editHouse,
+    rentHouse
 }
