@@ -7,7 +7,8 @@ const blogSchema = new Schema({
     title: {
         type: String,
         required: true,
-        minlength: [5, 'Title should be at least 5 characters']
+        min: [5, 'Title should be at least 5 characters'],
+        mix: [50, 'Title cant be more than 50 characters']
     },
     blogImg: {
         type: String,
@@ -20,7 +21,7 @@ const blogSchema = new Schema({
     blogContent: {
         type: String,
         required: true,
-        minlength: [50, 'Blog content should be at least 50 characters']
+        minlength: [10, 'Blog content should be at least 10 characters']
     },
     blogCategory: {
         type: String,
