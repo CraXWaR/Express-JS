@@ -1,0 +1,18 @@
+<div class="container">
+    <div class="blog-message">
+        <h1 id="site-title">Blog</h1>
+        <h2 id="site-mid-title">Create your own world!</h2>
+    </div>
+    {{#if lastThreeBlogs}}
+    <div class="last-blogs">
+        {{#each lastThreeBlogs}}
+        {{> homeBlogs}}
+        {{/each}}
+    </div>
+    {{!-- If there are still no blog posts on the database --}}
+    {{else}}
+    <article class="not-available-blogs">
+        <h1>No blogs created yet.</h1>
+    </article>
+    {{/if}}
+</div>
