@@ -49,10 +49,9 @@ cryptoController.get('/catalog', async (req, res) => {
 cryptoController.get('/details/:id', async (req, res) => {
     const crypto = await getCryptoById(req.params.id);
 
-    if (req.user._id) {
-        crypto.isOwner = crypto.owner.toString() == req.user._id.toString();
-        crypto.isBougth = crypto.buyCrypto.some((id) => id == req.user._id);
-    }
+
+    crypto.isOwner = crypto.owner.toString() == req.user?._id.toString();
+    crypto.isBougth = crypto.buyCrypto.some((id) => id == req.user?._id);
 
     res.render('details', {
         title: crypto.title,
