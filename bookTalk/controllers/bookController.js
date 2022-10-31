@@ -48,10 +48,8 @@ bookController.get('/catalog', async (req, res) => {
 bookController.get('/details/:id', async (req, res) => {
     const book = await getBookById(req.params.id);
 
-    if (req.user._id) {
-        book.isOwner = book.owner.toString() == req.user._id.toString();
-        book.isWished = book.wishList.some((id) => id == req.user._id);
-    }
+    book.isOwner = book.owner.toString() == req.user?._id.toString();
+    book.isWished = book.wishList.some((id) => id == req.user?._id);
 
     res.render('books/details', {
         title: book.title,
@@ -92,7 +90,7 @@ bookController.get('/details/:id/delete', async (req, res) => {
 
 bookController.post('/details/:id/edit', async (req, res) => {
     const book = await getBookById(req.params.id);
-
+    
     if (book.owner.toString() != req.user._id.toString()) {
         return res.redirect('/auth/login');
     }
