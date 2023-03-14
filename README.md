@@ -1,2 +1,2 @@
 # Express-JS
-back-end JS repo
+My SPA Applications with ExpressJS and nodeJS
